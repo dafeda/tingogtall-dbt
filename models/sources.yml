@@ -1,0 +1,55 @@
+version: 2
+sources:
+  - name: raw_ssb
+    description: 'Raw data from Statistics Norway (SSB)'
+    schema: public
+    tables:
+      - name: ssb_09190_gdp_quarterly
+        description: 'Raw GDP quarterly data from SSB table 09190'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: year_quarter
+            description: 'Quarter in YYYYKX format (e.g., 2025K1)'
+          - name: gdp_type
+            description: 'Type of GDP measure (total or mainland)'
+          - name: value_nok_million
+            description: 'GDP value in millions of NOK'
+          - name: created_at
+            description: 'Timestamp when record was created'
+
+      - name: ssb_03013_cpi_by_group
+        description: 'Raw CPI data from SSB table 03013'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: year_month
+            description: 'Month in YYYYMXX format (e.g., 2025M01)'
+          - name: consumption_group
+            description: 'CPI consumption group'
+          - name: measure_type
+            description: 'Type of measure (index, monthly_change, yearly_change)'
+          - name: value
+            description: 'CPI value (DECIMAL 10,2)'
+          - name: created_at
+            description: 'Timestamp when record was created'
+
+  - name: raw_nb
+    description: 'Raw data from Norges Bank'
+    schema: public
+    tables:
+      - name: nb_mpr_indicators
+        description: 'Norges Bank MPR indicators including policy rate'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: year_month
+            description: 'Month in YYYYMXX format (e.g., 2025M03)'
+          - name: source
+            description: 'Source publication (e.g., PPR 2/25)'
+          - name: indicator
+            description: 'Type of indicator (e.g., policy_rate)'
+          - name: value
+            description: 'Indicator value (DECIMAL 10,4)'
+          - name: created_at
+            description: 'Timestamp when record was created'
