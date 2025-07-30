@@ -5,7 +5,9 @@ sources:
     schema: public
     tables:
       - name: ssb_09190_gdp_quarterly
-        description: 'Raw GDP quarterly data from SSB table 09190'
+        description: 'Raw GDP quarterly data from SSB table 09190. Constant 2022 prices, seasonally adjusted.'
+        external:
+          location: 'https://www.ssb.no/en/statbank/table/09190'
         columns:
           - name: id
             description: 'Primary key'
@@ -14,7 +16,7 @@ sources:
           - name: gdp_type
             description: 'Type of GDP measure (total or mainland)'
           - name: value_nok_million
-            description: 'GDP value in millions of NOK'
+            description: 'GDP value in millions of NOK, constant 2022 prices, seasonally adjusted'
           - name: created_at
             description: 'Timestamp when record was created'
 
