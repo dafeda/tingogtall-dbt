@@ -11,6 +11,8 @@ sources:
         columns:
           - name: id
             description: 'Primary key'
+          - name: period_id
+            description: 'Foreign key to time_periods table'
           - name: year_quarter
             description: 'Quarter in YYYYKX format (e.g., 2025K1)'
           - name: gdp_type
@@ -25,6 +27,8 @@ sources:
         columns:
           - name: id
             description: 'Primary key'
+          - name: period_id
+            description: 'Foreign key to time_periods table'
           - name: year_month
             description: 'Month in YYYYMXX format (e.g., 2025M01)'
           - name: consumption_group
@@ -35,6 +39,62 @@ sources:
             description: 'CPI value (DECIMAL 10,2)'
           - name: created_at
             description: 'Timestamp when record was created'
+
+      - name: ssb_05327_adjusted_cpi_by_group
+        description: 'Raw adjusted CPI data from SSB table 05327'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: period_id
+            description: 'Foreign key to time_periods table'
+          - name: consumption_group
+            description: 'Adjusted CPI consumption group (JA_TOTAL, JAE_TOTAL, etc.)'
+          - name: measure_type
+            description: 'Type of measure (index, monthly_change, yearly_change)'
+          - name: value
+            description: 'Adjusted CPI value'
+          - name: created_at
+            description: 'Timestamp when record was created'
+
+      - name: ssb_09842_gdp_per_capita
+        description: 'Raw GDP per capita data from SSB table 09842'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: period_id
+            description: 'Foreign key to time_periods table'
+          - name: indicator_name
+            description: 'Name of the GDP indicator'
+          - name: value_nok_per_capita
+            description: 'GDP value per capita in NOK'
+          - name: created_at
+            description: 'Timestamp when record was created'
+
+      - name: ssb_13760_labour_force_survey
+        description: 'Raw labour force survey data from SSB table 13760'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: period_id
+            description: 'Foreign key to time_periods table'
+          - name: value
+            description: 'Unemployment rate value'
+          - name: created_at
+            description: 'Timestamp when record was created'
+
+      - name: time_periods
+        description: 'Time periods lookup table'
+        columns:
+          - name: period_id
+            description: 'Primary key'
+          - name: period_type
+            description: 'Type of period (monthly, quarterly, yearly)'
+          - name: period_code
+            description: 'Period code (e.g., 2025M01, 2025K1)'
+          - name: start_date
+            description: 'Start date of the period'
+          - name: end_date
+            description: 'End date of the period'
 
   - name: raw_nb
     description: 'Raw data from Norges Bank'
