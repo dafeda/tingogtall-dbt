@@ -112,6 +112,33 @@ sources:
           - name: indicator
             description: 'Type of indicator (e.g., policy_rate)'
           - name: value
-            description: 'Indicator value (DECIMAL 10,4)'
+            description: 'Indicator value'
+          - name: created_at
+            description: 'Timestamp when record was created'
+      - name: nb_policy_rates_monthly
+        description: 'Monthly policy rates from Norges Bank'
+        columns:
+          - name: id
+            description: 'Primary key'
+          - name: year_month
+            description: 'Month in YYYYMXX format (e.g., 2025M03)'
+          - name: instrument_type 
+            description: |
+              Type of financial instrument. Possible values:
+              - KPRA: Key policy rate - The sight deposit rate. The interest rate on banks' reserves up to a specified quota in Norges Bank.
+            tests:
+              - accepted_values:
+                  values: ['KPRA']
+          - name: tenor 
+            description: |
+              The amount of time left for the repayment of a loan or until a financial contract expires. Possible values:
+              - OL: Overnight lending rate
+              - RR: Reserve rate
+              - SD: Sight deposit rate (Policy rate)
+            tests:
+              - accepted_values:
+                  values: ['OL', 'RR', 'SD']
+          - name: rate 
+            description: 'Interest rate value (DECIMAL format)'
           - name: created_at
             description: 'Timestamp when record was created'
