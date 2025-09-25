@@ -142,3 +142,16 @@ sources:
             description: 'Interest rate value (DECIMAL format)'
           - name: created_at
             description: 'Timestamp when record was created'
+
+  - name: stage 
+    description: 'Raw data from Norges Bank'
+    schema: stage 
+    tables:
+      - name: currencies 
+        description: 'Norges Bank lists some 40 exchange rates.'
+      - name: year_month
+        description: 'Month in YYYYMXX format (e.g., 2025M03)'
+      - name: currency
+        description: 'Currency, including I-44'
+      - name: value
+        description: 'Value'
