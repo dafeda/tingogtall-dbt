@@ -138,6 +138,7 @@ WITH published AS (
 )
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'forecast' AS series,
@@ -148,6 +149,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'lower_50' AS series,
@@ -158,6 +160,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'upper_50' AS series,
@@ -168,6 +171,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'lower_70' AS series,
@@ -178,6 +182,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'upper_70' AS series,
