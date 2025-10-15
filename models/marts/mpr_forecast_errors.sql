@@ -9,9 +9,13 @@ The model:
 2. Generates error bands based on percentiles of historical forecast errors
 3. Applies these bands to the latest forecasts to create uncertainty intervals
 
-Output format is ready for charting with:
-- X-axis: year_month (forecast target dates)
-- Y-axis: CPI percentage values (forecast ± error bands)
+Output format is in tidy/long format with columns:
+- year_month: forecast target date
+- year_month_published: when forecast was published
+- forecast_horizon_months: how many months ahead
+- series: type of value (forecast, lower_50, upper_50, lower_70, upper_70)
+- value: the CPI percentage value
+- historical_obs_for_this_horizon: number of historical observations used
 
 MPR Publication dates:
 - MPR 2/24: Published 20 June 2024 10:00
@@ -80,7 +84,6 @@ WITH published AS (
     FROM mpr
     INNER JOIN ind ON mpr.forecast_target = ind.period_code
 )
--- Calculate error distributions by horizon
 , error_bands AS (
     SELECT 
         forecast_horizon_months,
@@ -99,38 +102,86 @@ WITH published AS (
     WHERE actual_status = 'Available'
     GROUP BY forecast_horizon_months
 )
--- Combine forecasts with uncertainty bands
+, forecast_with_bands AS (
+    SELECT 
+        mpr.year_month,
+        mpr.value AS forecast,
+        pub.year_month_published,
+        
+        (CAST(SUBSTRING(mpr.year_month, 1, 4) AS INT) * 12 
+         + CAST(SUBSTRING(mpr.year_month, 6, 2) AS INT))
+        - (CAST(SUBSTRING(pub.year_month_published, 1, 4) AS INT) * 12 
+         + CAST(SUBSTRING(pub.year_month_published, 6, 2) AS INT)) 
+        AS forecast_horizon_months,
+        
+        -- 50% confidence interval (DARKER shading)
+        mpr.value + e.p25_error AS lower_50,
+        mpr.value + e.p75_error AS upper_50,
+        
+        -- 70% confidence interval (LIGHTER shading)
+        mpr.value + e.p15_error AS lower_70,
+        mpr.value + e.p85_error AS upper_70,
+        
+        e.n_observations AS historical_obs_for_this_horizon
+        
+    FROM {{ source('raw_nb', 'nb_mpr_indicators') }} mpr
+    INNER JOIN published pub ON mpr.source = pub.raport
+    LEFT JOIN error_bands e ON (
+        (CAST(SUBSTRING(mpr.year_month, 1, 4) AS INT) * 12 
+         + CAST(SUBSTRING(mpr.year_month, 6, 2) AS INT))
+        - (CAST(SUBSTRING(pub.year_month_published, 1, 4) AS INT) * 12 
+         + CAST(SUBSTRING(pub.year_month_published, 6, 2) AS INT))
+    ) = e.forecast_horizon_months
+    WHERE mpr.indicator = 'cpi'
+        AND pub.year_month_published = (SELECT MAX(year_month_published) FROM published)
+        AND mpr.year_month > pub.year_month_published
+)
 SELECT 
-    mpr.year_month AS year_month,
-    mpr.value AS forecast,
-    pub.year_month_published,
-    
-    (CAST(SUBSTRING(mpr.year_month, 1, 4) AS INT) * 12 
-     + CAST(SUBSTRING(mpr.year_month, 6, 2) AS INT))
-    - (CAST(SUBSTRING(pub.year_month_published, 1, 4) AS INT) * 12 
-     + CAST(SUBSTRING(pub.year_month_published, 6, 2) AS INT)) 
-    AS forecast_horizon_months,
-    
-    -- 50% confidence interval (DARKER shading)
-    mpr.value + e.p25_error AS lower_50,
-    mpr.value + e.p75_error AS upper_50,
-    
-    -- 70% confidence interval (LIGHTER shading)
-    mpr.value + e.p15_error AS lower_70,
-    mpr.value + e.p85_error AS upper_70,
-    
-    -- For reference
-    e.n_observations AS historical_obs_for_this_horizon
-    
-FROM {{ source('raw_nb', 'nb_mpr_indicators') }} mpr
-INNER JOIN published pub ON mpr.source = pub.raport
-LEFT JOIN error_bands e ON (
-    (CAST(SUBSTRING(mpr.year_month, 1, 4) AS INT) * 12 
-     + CAST(SUBSTRING(mpr.year_month, 6, 2) AS INT))
-    - (CAST(SUBSTRING(pub.year_month_published, 1, 4) AS INT) * 12 
-     + CAST(SUBSTRING(pub.year_month_published, 6, 2) AS INT))
-) = e.forecast_horizon_months
-WHERE mpr.indicator = 'cpi'
-    AND pub.year_month_published = (SELECT MAX(year_month_published) FROM published)
-    AND mpr.year_month > pub.year_month_published
-ORDER BY mpr.year_month
+    year_month,
+    forecast_horizon_months,
+    historical_obs_for_this_horizon,
+    'forecast' AS series,
+    forecast AS value
+FROM forecast_with_bands
+
+UNION ALL
+
+SELECT 
+    year_month,
+    forecast_horizon_months,
+    historical_obs_for_this_horizon,
+    'lower_50' AS series,
+    lower_50 AS value
+FROM forecast_with_bands
+
+UNION ALL
+
+SELECT 
+    year_month,
+    forecast_horizon_months,
+    historical_obs_for_this_horizon,
+    'upper_50' AS series,
+    upper_50 AS value
+FROM forecast_with_bands
+
+UNION ALL
+
+SELECT 
+    year_month,
+    forecast_horizon_months,
+    historical_obs_for_this_horizon,
+    'lower_70' AS series,
+    lower_70 AS value
+FROM forecast_with_bands
+
+UNION ALL
+
+SELECT 
+    year_month,
+    forecast_horizon_months,
+    historical_obs_for_this_horizon,
+    'upper_70' AS series,
+    upper_70 AS value
+FROM forecast_with_bands
+
+ORDER BY year_month, series
