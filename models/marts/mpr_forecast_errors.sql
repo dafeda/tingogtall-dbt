@@ -17,17 +17,89 @@ Output format is in tidy/long format with columns:
 - value: the CPI percentage value
 - historical_obs_for_this_horizon: number of historical observations used
 
-MPR Publication dates:
-- MPR 2/24: Published 20 June 2024 10:00
-- MPR 3/24: Published 19 September 2024 10:00
-- MPR 4/24: Published 19 December 2024 10:00
-- MPR 1/25: Published 27 March 2025 10:00
-- MPR 2/25: Published 19 June 2025 10:00
-- MPR 3/25: Published 18 September 2025 10:00
+-- MPR Publication dates:
+-- MPR 2/18: Published 21 June 2018 10:00
+-- MPR 3/18: Published 20 September 2018 10:00
+-- MPR 4/18: Published 13 December 2018 10:00
+-- MPR 1/19: Published 21 March 2019 10:00
+-- MPR 2/19: Published 20 June 2019 10:00
+-- MPR 3/19: Published 19 September 2019 10:00
+-- MPR 4/19: Published 19 December 2019 10:00
+-- MPR 1/20: Published 13 March 2020 08:30
+-- MPR 2/20: Published 18 June 2020 10:00
+-- MPR 3/20: Published 24 September 2020 10:00
+-- MPR 4/20: Published 17 December 2020 10:00
+-- MPR 1/21: Published 18 March 2021 10:00
+-- MPR 2/21: Published 17 June 2021 10:0
+-- MPR 3/21: Published 23 September 2021 10:00
+-- MPR 4/21: Published 16 December 2021 10:00
+-- MPR 1/22: Published 24 March 2022 10:00
+-- MPR 2/22: Published 23 June 2022 10:00
+-- MPR 3/22: Published 22 September 2022 10:00
+-- MPR 4/22: Published 15 December 2022 10:00
+-- MPR 1/23: Published 23 March 2023 10:00
+-- MPR 2/23: Published 22 June 2023 10:00
+-- MPR 3/23: Published 21 September 2023 10:00
+-- MPR 4/23: Published 14 December 2023 10:00Edited 14 December 2023 10:05
+-- MPR 1/24: Published 21 March 2024 10:00
+-- MPR 2/24: Published 20 June 2024 10:00
+-- MPR 3/24: Published 19 September 2024 10:00
+-- MPR 4/24: Published 19 December 2024 10:00
+-- MPR 1/25: Published 27 March 2025 10:00
+-- MPR 2/25: Published 19 June 2025 10:00
+-- MPR 3/25: Published 18 September 2025 10:00
 */
 
 WITH published AS (
-    SELECT 'MPR 2/24' AS raport, '2024M06' AS year_month_published
+ SELECT 'MPR 2/18' AS raport, '2018M06' AS year_month_published
+    UNION ALL
+    SELECT 'MPR 3/18', '2018M09'
+    UNION ALL
+    SELECT 'MPR 4/18', '2018M12'
+    UNION ALL
+    SELECT 'MPR 1/19', '2019M03'
+    UNION ALL
+    SELECT 'MPR 2/19', '2019M06'
+    UNION ALL
+    SELECT 'MPR 3/19', '2019M09'
+    UNION ALL
+    SELECT 'MPR 4/19', '2019M12'
+    UNION ALL
+    SELECT 'MPR 1/20', '2020M03'
+    UNION ALL
+    SELECT 'MPR 2/20', '2020M06'
+    UNION ALL
+    SELECT 'MPR 3/20', '2020M09'
+    UNION ALL
+    SELECT 'MPR 4/20', '2020M12'
+    UNION ALL
+    SELECT 'MPR 1/21', '2021M03'
+    UNION ALL
+    SELECT 'MPR 2/21', '2021M06'
+    UNION ALL
+    SELECT 'MPR 3/21', '2021M09'
+    UNION ALL
+    SELECT 'MPR 4/21', '2021M12'
+    UNION ALL
+    SELECT 'MPR 1/22', '2022M03'
+    UNION ALL
+    SELECT 'MPR 2/22', '2022M06'
+    UNION ALL
+    SELECT 'MPR 3/22', '2022M09'
+    UNION ALL
+    SELECT 'MPR 4/22', '2022M12'
+    UNION ALL
+    SELECT 'MPR 1/23', '2023M03'
+    UNION ALL
+    SELECT 'MPR 2/23', '2023M06'
+    UNION ALL
+    SELECT 'MPR 3/23', '2023M09'
+    UNION ALL
+    SELECT 'MPR 4/23', '2023M12'
+    UNION ALL
+    SELECT 'MPR 1/24', '2024M03'
+    UNION ALL
+    SELECT 'MPR 2/24', '2024M06'
     UNION ALL
     SELECT 'MPR 3/24', '2024M09'
     UNION ALL
@@ -138,6 +210,7 @@ WITH published AS (
 )
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'forecast' AS series,
@@ -148,6 +221,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'lower_50' AS series,
@@ -158,6 +232,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'upper_50' AS series,
@@ -168,6 +243,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'lower_70' AS series,
@@ -178,6 +254,7 @@ UNION ALL
 
 SELECT 
     year_month,
+    'cpi' as indicator,
     forecast_horizon_months,
     historical_obs_for_this_horizon,
     'upper_70' AS series,
