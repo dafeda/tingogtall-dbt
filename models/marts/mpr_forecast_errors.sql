@@ -18,6 +18,16 @@ Output format is in tidy/long format with columns:
 - historical_obs_for_this_horizon: number of historical observations used
 
 -- MPR Publication dates:
+-- MPR 2/18: Published 21 June 2018 10:00
+-- MPR 3/18: Published 20 September 2018 10:00
+-- MPR 4/18: Published 13 December 2018 10:00
+-- MPR 1/19: Published 21 March 2019 10:00
+-- MPR 2/19: Published 20 June 2019 10:00
+-- MPR 3/19: Published 19 September 2019 10:00
+-- MPR 4/19: Published 19 December 2019 10:00
+-- MPR 1/20: Published 13 March 2020 08:30
+-- MPR 2/20: Published 18 June 2020 10:00
+-- MPR 3/20: Published 24 September 2020 10:00
 -- MPR 4/20: Published 17 December 2020 10:00
 -- MPR 1/21: Published 18 March 2021 10:00
 -- MPR 2/21: Published 17 June 2021 10:0
@@ -41,7 +51,27 @@ Output format is in tidy/long format with columns:
 */
 
 WITH published AS (
-    SELECT 'MPR 4/20' AS raport, '2020M12' AS year_month_published
+ SELECT 'MPR 2/18' AS raport, '2018M06' AS year_month_published
+    UNION ALL
+    SELECT 'MPR 3/18', '2018M09'
+    UNION ALL
+    SELECT 'MPR 4/18', '2018M12'
+    UNION ALL
+    SELECT 'MPR 1/19', '2019M03'
+    UNION ALL
+    SELECT 'MPR 2/19', '2019M06'
+    UNION ALL
+    SELECT 'MPR 3/19', '2019M09'
+    UNION ALL
+    SELECT 'MPR 4/19', '2019M12'
+    UNION ALL
+    SELECT 'MPR 1/20', '2020M03'
+    UNION ALL
+    SELECT 'MPR 2/20', '2020M06'
+    UNION ALL
+    SELECT 'MPR 3/20', '2020M09'
+    UNION ALL
+    SELECT 'MPR 4/20', '2020M12'
     UNION ALL
     SELECT 'MPR 1/21', '2021M03'
     UNION ALL
