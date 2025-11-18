@@ -1,0 +1,8 @@
+[sqlfluff]
+dialect = postgres
+exclude_rules =
+    L031  # Avoid aliasing tables
+    L034  # Do not use wildcards in SELECT
+
+[sqlfluff:rules]
+max_line_length = 120

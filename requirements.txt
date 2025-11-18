@@ -1,1 +1,4 @@
 dbt-postgres
+
+sqlfluff
+pre-commit
