@@ -1,8 +1,9 @@
 [sqlfluff]
 dialect = postgres
-exclude_rules =
-    L031  # Avoid aliasing tables
-    L034  # Do not use wildcards in SELECT
+# Avoid aliasing tables (L031)
+# Do not use wildcards in SELECT (L034)
+# Keywords should not be used as identifiers (RF04)
+exclude_rules = L031, L034, RF04
 
 max_line_length = 120
 
