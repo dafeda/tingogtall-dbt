@@ -144,14 +144,30 @@ sources:
             description: 'Timestamp when record was created'
 
   - name: stage 
-    description: 'Raw data from Norges Bank'
+    description: 'Staged data from various sources'
     schema: stage 
     tables:
       - name: currencies 
         description: 'Norges Bank lists some 40 exchange rates.'
-      - name: year_month
-        description: 'Month in YYYYMXX format (e.g., 2025M03)'
-      - name: currency
-        description: 'Currency, including I-44'
-      - name: value
-        description: 'Value'
+        columns:
+          - name: year_month
+            description: 'Month in YYYYMXX format (e.g., 2025M03)'
+          - name: currency
+            description: 'Currency, including I-44'
+          - name: value
+            description: 'Value'
+      - name: fred_series_observations
+        description: 'Data fetched from FRED.'
+        columns:
+          - name: date
+            description: 'Date'
+          - name: indicator
+            description: 'Name of indicator'
+          - name: description
+            description: 'Description of indicator'
+          - name: unit
+            description: 'Unit of indicator'
+          - name: value
+            description: 'Value of indicator'
+          - name: created_at
+            description: 'When data was fetched'
