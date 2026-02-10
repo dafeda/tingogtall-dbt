@@ -40,8 +40,8 @@ sources:
           - name: created_at
             description: 'Timestamp when record was created'
 
-      - name: ssb_05327_adjusted_cpi_by_group
-        description: 'Raw adjusted CPI data from SSB table 05327'
+      - name: ssb_14706_adjusted_cpi_by_group
+        description: 'Raw adjusted CPI data from SSB table 14706'
         columns:
           - name: id
             description: 'Primary key'

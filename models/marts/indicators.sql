@@ -4,24 +4,24 @@ SELECT
     tp.period_type,
     tp.period_code,
     CASE
-        WHEN acpi.consumption_group = 'JA_TOTAL' THEN 'CPI-AT'
-        WHEN acpi.consumption_group = 'JAE_TOTAL' THEN 'CPI-ATE'
-        WHEN acpi.consumption_group = 'JE_TOTAL' THEN 'CPI-AE'
-        WHEN acpi.consumption_group = 'JEL_TOTAL' THEN 'CPI-AEL'
+        WHEN acpi.consumption_group = 'KPI-JA' THEN 'CPI-AT'
+        WHEN acpi.consumption_group = 'KPI-JAE' THEN 'CPI-ATE'
+        WHEN acpi.consumption_group = 'KPI-JE' THEN 'CPI-AE'
+        WHEN acpi.consumption_group = 'KPI-JEL' THEN 'CPI-AEL'
         ELSE acpi.consumption_group
     END AS indicator,
     CASE
         WHEN
-            acpi.consumption_group = 'JA_TOTAL'
+            acpi.consumption_group = 'KPI-JA'
             THEN 'CPI adjusted for tax changes.'
         WHEN
-            acpi.consumption_group = 'JAE_TOTAL'
+            acpi.consumption_group = 'KPI-JAE'
             THEN 'CPI adjusted for tax changes and excluding energy products'
         WHEN
-            acpi.consumption_group = 'JE_TOTAL'
+            acpi.consumption_group = 'KPI-JE'
             THEN 'CPI excluding energy products'
         WHEN
-            acpi.consumption_group = 'JEL_TOTAL'
+            acpi.consumption_group = 'KPI-JEL'
             THEN 'CPI excluding electricity'
         ELSE acpi.consumption_group
     END AS description,
@@ -29,7 +29,7 @@ SELECT
     acpi.value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_05327_adjusted_cpi_by_group') }} AS acpi
+FROM {{ source('raw_ssb', 'ssb_14706_adjusted_cpi_by_group') }} AS acpi
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON acpi.period_id = tp.period_id
