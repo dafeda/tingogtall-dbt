@@ -22,8 +22,8 @@ sources:
           - name: created_at
             description: 'Timestamp when record was created'
 
-      - name: ssb_03013_cpi_by_group
-        description: 'Raw CPI data from SSB table 03013'
+      - name: ssb_14700_cpi_by_group
+        description: 'Raw CPI data from SSB table 14700'
         columns:
           - name: id
             description: 'Primary key'

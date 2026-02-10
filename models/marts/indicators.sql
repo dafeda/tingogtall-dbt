@@ -38,7 +38,7 @@ SELECT
     tp.period_type,
     tp.period_code,
     CASE
-        WHEN cpi.consumption_group = 'TOTAL' THEN 'CPI'
+        WHEN cpi.consumption_group = '00' THEN 'CPI'
         ELSE cpi.consumption_group
     END AS indicator,
     'Development in consumer prices for goods and services purchased by private households in Norway' AS description,
@@ -46,7 +46,7 @@ SELECT
     cpi.value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_03013_cpi_by_group') }} AS cpi
+FROM {{ source('raw_ssb', 'ssb_14700_cpi_by_group') }} AS cpi
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON cpi.period_id = tp.period_id
