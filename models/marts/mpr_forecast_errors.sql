@@ -84,10 +84,10 @@ cpi_ate AS (
 
 policy_rate_actuals AS (
     SELECT
-        year_month AS period_code,
+        period_code,
         'policy_rate' AS indicator,
         rate AS actual_value
-    FROM {{ source('raw_nb', 'nb_policy_rates_monthly') }}
+    FROM {{ ref('nb_policy_rates_monthly') }}
     WHERE tenor = 'SD'
 ),
 

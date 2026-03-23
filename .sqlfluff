@@ -3,7 +3,7 @@ dialect = postgres
 # Avoid aliasing tables (L031)
 # Do not use wildcards in SELECT (L034)
 # Keywords should not be used as identifiers (RF04)
-exclude_rules = L031, L034, RF04
+exclude_rules = L031, L034, RF04, AL03, RF02
 
 max_line_length = 120
 

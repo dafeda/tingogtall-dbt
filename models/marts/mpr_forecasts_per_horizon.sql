@@ -3,9 +3,12 @@
 ) }}
 
 /*
-This model calculates forecast errors for Norges Bank's Monetary Policy Report (MPR) forecasts of CPI, CPI-ATE, and policy rate.
-It joins MPR forecasts with actual outcomes and computes the forecast horizon in months, enabling analysis of forecast accuracy by horizon.
-Useful for creating histograms or summary statistics of forecast errors per horizon.
+This model calculates forecast errors for Norges Bank's
+Monetary Policy Report (MPR) forecasts of CPI, CPI-ATE,
+and policy rate. It joins MPR forecasts with actual outcomes
+and computes the forecast horizon in months, enabling
+analysis of forecast accuracy by horizon. Useful for creating
+histograms or summary statistics of forecast errors per horizon.
 */
 
 WITH published AS (
@@ -112,10 +115,10 @@ cpi_ate AS (
 
 policy_rate_actuals AS (
     SELECT
-        year_month AS period_code,
+        period_code,
         'policy_rate' AS indicator,
         rate AS actual_value
-    FROM nb_policy_rates_monthly
+    FROM {{ ref('nb_policy_rates_monthly') }}
     WHERE tenor = 'SD'
 )
 

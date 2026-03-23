@@ -1,87 +1,52 @@
 version: 2
 sources:
+  - name: public
+    description: 'Public facing tables'
+    schema: public
+    tables:
+      - name: time_periods
+        description: "Static time dimension table with monthly, quarterly, and yearly periods (1960-2090)"
+        columns:
+          - name: period_id
+            description: "Auto-incrementing primary key"
+            tests:
+              - unique
+              - not_null
+          - name: period_code
+            description: "Human-readable period code (e.g. 2024M01, 2024K1, 2024)"
+            tests:
+              - unique
+              - not_null
+          - name: period_type
+            description: "Type of period: month, quarter, or year"
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['month', 'quarter', 'year']
+          - name: year
+            description: "Calendar year"
+            tests:
+              - not_null
+          - name: period_number
+            description: "Period number within the year (1-12 for months, 1-4 for quarters, 1 for years)"
+            tests:
+              - not_null
+          - name: start_date
+            description: "First day of the period"
+            tests:
+              - not_null
+          - name: end_date
+            description: "Last day of the period"
+            tests:
+              - not_null
+          - name: created_at
+            description: "Timestamp when the record was created"
+
   - name: raw_ssb
     description: 'Raw data from Statistics Norway (SSB)'
     schema: public
     tables:
-      - name: ssb_09190_gdp_quarterly
-        description: 'Raw GDP quarterly data from SSB table 09190. Constant 2022 prices, seasonally adjusted.'
-        external:
-          location: 'https://www.ssb.no/en/statbank/table/09190'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: period_id
-            description: 'Foreign key to time_periods table'
-          - name: year_quarter
-            description: 'Quarter in YYYYKX format (e.g., 2025K1)'
-          - name: gdp_type
-            description: 'Type of GDP measure (total or mainland)'
-          - name: value_nok_million
-            description: 'GDP value in millions of NOK, constant 2022 prices, seasonally adjusted'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
-      - name: ssb_14700_cpi_by_group
-        description: 'Raw CPI data from SSB table 14700'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: period_id
-            description: 'Foreign key to time_periods table'
-          - name: year_month
-            description: 'Month in YYYYMXX format (e.g., 2025M01)'
-          - name: consumption_group
-            description: 'CPI consumption group'
-          - name: measure_type
-            description: 'Type of measure (index, monthly_change, yearly_change)'
-          - name: value
-            description: 'CPI value (DECIMAL 10,2)'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
-      - name: ssb_14706_adjusted_cpi_by_group
-        description: 'Raw adjusted CPI data from SSB table 14706'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: period_id
-            description: 'Foreign key to time_periods table'
-          - name: consumption_group
-            description: 'Adjusted CPI consumption group (JA_TOTAL, JAE_TOTAL, etc.)'
-          - name: measure_type
-            description: 'Type of measure (index, monthly_change, yearly_change)'
-          - name: value
-            description: 'Adjusted CPI value'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
-      - name: ssb_09842_gdp_per_capita
-        description: 'Raw GDP per capita data from SSB table 09842'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: period_id
-            description: 'Foreign key to time_periods table'
-          - name: indicator_name
-            description: 'Name of the GDP indicator'
-          - name: value_nok_per_capita
-            description: 'GDP value per capita in NOK'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
-      - name: ssb_13760_labour_force_survey
-        description: 'Raw labour force survey data from SSB table 13760'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: period_id
-            description: 'Foreign key to time_periods table'
-          - name: value
-            description: 'Unemployment rate value'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
       - name: time_periods
         description: 'Time periods lookup table'
         columns:
@@ -115,36 +80,6 @@ sources:
             description: 'Indicator value'
           - name: created_at
             description: 'Timestamp when record was created'
-      - name: nb_policy_rates_monthly
-        description: 'Monthly policy rates from Norges Bank'
-        columns:
-          - name: id
-            description: 'Primary key'
-          - name: year_month
-            description: 'Month in YYYYMXX format (e.g., 2025M03)'
-          - name: instrument_type 
-            description: |
-              Type of financial instrument. Possible values:
-              - KPRA: Key policy rate - The sight deposit rate. The interest rate on banks' reserves up to a specified quota in Norges Bank.
-            tests:
-              - accepted_values:
-                  arguments:
-                    values: ['KPRA']
-          - name: tenor 
-            description: |
-              The amount of time left for the repayment of a loan or until a financial contract expires. Possible values:
-              - OL: Overnight lending rate
-              - RR: Reserve rate
-              - SD: Sight deposit rate (Policy rate)
-            tests:
-              - accepted_values:
-                  arguments:
-                    values: ['OL', 'RR', 'SD']
-          - name: rate 
-            description: 'Interest rate value (DECIMAL format)'
-          - name: created_at
-            description: 'Timestamp when record was created'
-
   - name: stage 
     description: 'Staged data from various sources'
     schema: stage 
@@ -173,3 +108,84 @@ sources:
             description: 'Value of indicator'
           - name: created_at
             description: 'When data was fetched'
+      - name: nb_policy_rates_monthly
+        description: 'Monthly policy rates from Norges Bank'
+        columns:
+          - name: id
+          - name: year_month
+            tests: [not_null]
+          - name: instrument_type
+            tests: [not_null]
+          - name: tenor
+            tests: [not_null]
+          - name: rate
+          - name: created_at
+      - name: ssb_14700_cpi_by_group
+        columns:
+          - name: id
+          - name: year_month
+            tests: [not_null]
+          - name: consumption_group
+            tests:
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['00']
+          - name: content_label
+            tests: 
+              - not_null
+              - accepted_values:
+                  arguments:
+                    values: ['Consumer Price Index (2025=100)', '12-month rate (per cent)', 'Monthly change (per cent)']
+          - name: value
+          - name: created_at
+      - name: ssb_13760_labour_force_survey
+        description: 'Raw labour force survey data from SSB table 13760'
+        columns:
+          - name: id
+          - name: year_month
+            tests: [not_null]
+          - name: sex
+            tests: [not_null]
+          - name: age
+            tests: [not_null]
+          - name: type_of_adjustment
+            tests: [not_null]
+          - name: contents
+            tests: [not_null]
+          - name: value
+          - name: created_at
+      - name: ssb_09842_gdp_per_capita
+        description: 'Raw GDP per capita data from SSB table 09842'
+        columns:
+          - name: id
+          - name: year
+            tests: [not_null]
+          - name: indicator_name
+            tests: [not_null]
+          - name: value
+          - name: created_at
+      - name: ssb_09190_gdp_quarterly
+        description: 'Raw GDP quarterly data from SSB table 09190. Constant 2022 prices, seasonally adjusted.'
+        columns:
+          - name: id
+          - name: year_quarter
+            tests: [not_null]
+          - name: macroeconomic_indicator
+            tests: [not_null]
+          - name: contents
+            tests: [not_null]
+          - name: value
+          - name: created_at
+      - name: ssb_14706_adjusted_cpi_by_group
+        description: 'Raw adjusted CPI data from SSB table 14706'
+        columns:
+          - name: id
+          - name: year_month
+            tests: [not_null]
+          - name: derived_series
+            tests: [not_null]
+          - name: content_label
+            tests: [not_null]
+          - name: value
+          - name: created_at

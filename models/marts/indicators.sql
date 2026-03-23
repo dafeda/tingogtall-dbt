@@ -29,7 +29,7 @@ SELECT
     acpi.value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_14706_adjusted_cpi_by_group') }} AS acpi
+FROM {{ ref('ssb_14706_adjusted_cpi_by_group') }} AS acpi
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON acpi.period_id = tp.period_id
@@ -46,7 +46,7 @@ SELECT
     cpi.value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_14700_cpi_by_group') }} AS cpi
+FROM {{ ref('ssb_14700_cpi_by_group') }} AS cpi
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON cpi.period_id = tp.period_id
@@ -76,9 +76,9 @@ SELECT
     gdpcap.value_nok_per_capita AS value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_09842_gdp_per_capita') }} AS gdpcap
+FROM {{ ref('ssb_09842_gdp_per_capita') }} AS gdpcap
 INNER JOIN
-    {{ source('raw_ssb', 'time_periods') }} AS tp
+    {{ source('public', 'time_periods') }} AS tp
     ON gdpcap.period_id = tp.period_id
 UNION ALL
 SELECT
@@ -122,9 +122,9 @@ SELECT
     ) AS value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_09842_gdp_per_capita') }} AS gdpcap
+FROM {{ ref('ssb_09842_gdp_per_capita') }} AS gdpcap
 INNER JOIN
-    {{ source('raw_ssb', 'time_periods') }} AS tp
+    {{ source('public', 'time_periods') }} AS tp
     ON gdpcap.period_id = tp.period_id
 UNION ALL
 SELECT
@@ -138,19 +138,24 @@ SELECT
         WHEN
             gdp.gdp_type = 'total'
             THEN
-                'Total GDP in constant 2022 prices, seasonally adjusted. Includes all economic activities including petroleum and international shipping.'
+                'Total GDP in constant 2022 prices,'
+                ' seasonally adjusted. Includes all'
+                ' economic activities including'
+                ' petroleum and international shipping.'
         WHEN
             gdp.gdp_type = 'mainland'
             THEN
-                'Mainland GDP in constant 2022 prices, seasonally adjusted. Excludes petroleum activities and international shipping.'
+                'Mainland GDP in constant 2022 prices,'
+                ' seasonally adjusted. Excludes petroleum'
+                ' activities and international shipping.'
     END AS description,
     'index' AS measure_type,
     gdp.value_nok_million AS value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_09190_gdp_quarterly') }} AS gdp
+FROM {{ ref('ssb_09190_gdp_quarterly') }} AS gdp
 INNER JOIN
-    {{ source('raw_ssb', 'time_periods') }} AS tp
+    {{ source('public', 'time_periods') }} AS tp
     ON gdp.period_id = tp.period_id
 UNION ALL
 SELECT
@@ -164,11 +169,16 @@ SELECT
         WHEN
             gdp.gdp_type = 'total'
             THEN
-                'Total GDP in constant 2022 prices, seasonally adjusted. Includes all economic activities including petroleum and international shipping.'
+                'Total GDP in constant 2022 prices,'
+                ' seasonally adjusted. Includes all'
+                ' economic activities including'
+                ' petroleum and international shipping.'
         WHEN
             gdp.gdp_type = 'mainland'
             THEN
-                'Mainland GDP in constant 2022 prices, seasonally adjusted. Excludes petroleum activities and international shipping.'
+                'Mainland GDP in constant 2022 prices,'
+                ' seasonally adjusted. Excludes petroleum'
+                ' activities and international shipping.'
     END AS description,
     'quarterly_change' AS measure_type,
     ROUND(
@@ -185,9 +195,9 @@ SELECT
     ) AS value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_09190_gdp_quarterly') }} AS gdp
+FROM {{ ref('ssb_09190_gdp_quarterly') }} AS gdp
 INNER JOIN
-    {{ source('raw_ssb', 'time_periods') }} AS tp
+    {{ source('public', 'time_periods') }} AS tp
     ON gdp.period_id = tp.period_id
 UNION ALL
 SELECT
@@ -199,7 +209,7 @@ SELECT
     value,
     tp.start_date,
     tp.end_date
-FROM {{ source('raw_ssb', 'ssb_13760_labour_force_survey') }} AS lfs
+FROM {{ ref('ssb_13760_labour_force_survey') }} AS lfs
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON lfs.period_id = tp.period_id
