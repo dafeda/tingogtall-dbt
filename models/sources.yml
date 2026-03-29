@@ -128,7 +128,8 @@ sources:
               - KPRA: Key policy rate - The sight deposit rate. The interest rate on banks' reserves up to a specified quota in Norges Bank.
             tests:
               - accepted_values:
-                  values: ['KPRA']
+                  arguments:
+                    values: ['KPRA']
           - name: tenor 
             description: |
               The amount of time left for the repayment of a loan or until a financial contract expires. Possible values:
@@ -137,7 +138,8 @@ sources:
               - SD: Sight deposit rate (Policy rate)
             tests:
               - accepted_values:
-                  values: ['OL', 'RR', 'SD']
+                  arguments:
+                    values: ['OL', 'RR', 'SD']
           - name: rate 
             description: 'Interest rate value (DECIMAL format)'
           - name: created_at
