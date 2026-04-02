@@ -1,0 +1,252 @@
+version: 2
+
+models:
+  - name: currencies
+    columns:
+      - name: year_month
+        tests:
+          - not_null
+      - name: currency
+        tests:
+          - not_null
+      - name: measure_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['index', 'yearly_change']
+      - name: value
+
+  - name: indicators
+    columns:
+      - name: period_type
+        tests:
+          - not_null
+      - name: period_code
+        tests:
+          - not_null
+      - name: indicator
+        tests:
+          - not_null
+      - name: description
+        tests:
+          - not_null
+      - name: measure_type
+        tests:
+          - not_null
+      - name: value
+      - name: start_date
+        tests:
+          - not_null
+      - name: end_date
+        tests:
+          - not_null
+
+  - name: mpr_forecast_errors
+    columns:
+      - name: year_month
+        tests:
+          - not_null
+      - name: indicator
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['cpi', 'cpi_ate', 'policy_rate']
+      - name: forecast_horizon_months
+        tests:
+          - not_null
+      - name: historical_obs_for_this_horizon
+      - name: series
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['forecast', 'p10', 'p90']
+      - name: value
+
+  - name: mpr_forecasts_per_horizon
+    columns:
+      - name: source
+        tests:
+          - not_null
+      - name: forecast_horizon_months
+        tests:
+          - not_null
+      - name: forecast_target
+        tests:
+          - not_null
+      - name: indicator
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['cpi', 'cpi_ate', 'policy_rate']
+      - name: forecast_value
+        tests:
+          - not_null
+      - name: actual_value
+      - name: forecast_error
+      - name: year_month_published
+        tests:
+          - not_null
+
+  - name: mpr_publication_dates
+    columns:
+      - name: raport
+        tests:
+          - not_null
+          - unique
+      - name: year_month_published
+        tests:
+          - not_null
+      - name: date_published
+        tests:
+          - not_null
+
+  - name: nb_policy_rates_monthly
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: period_code
+        tests:
+          - not_null
+      - name: instrument_type
+        tests:
+          - not_null
+      - name: tenor
+        tests:
+          - not_null
+      - name: rate
+
+  - name: oil_prices
+    columns:
+      - name: year_month
+        tests:
+          - not_null
+      - name: month_start_date
+        tests:
+          - not_null
+      - name: indicator
+        tests:
+          - not_null
+      - name: description
+        tests:
+          - not_null
+      - name: unit
+        tests:
+          - not_null
+      - name: avg_value
+      - name: min_value
+      - name: max_value
+      - name: observation_count
+        tests:
+          - not_null
+
+  - name: ssb_09190_gdp_quarterly
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: period_code
+        tests:
+          - not_null
+      - name: gdp_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['total', 'mainland']
+      - name: value_nok_million
+
+  - name: ssb_09842_gdp_per_capita
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: period_code
+        tests:
+          - not_null
+      - name: indicator_name
+        tests:
+          - not_null
+      - name: value_nok_per_capita
+
+  - name: ssb_13760_labour_force_survey
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: sex
+        tests:
+          - not_null
+      - name: age
+        tests:
+          - not_null
+      - name: type_of_adjustment
+        tests:
+          - not_null
+      - name: contents
+        tests:
+          - not_null
+      - name: value
+        tests:
+          - not_null
+
+  - name: ssb_14700_cpi_by_group
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: consumption_group
+        tests:
+          - not_null
+      - name: measure_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['index', 'monthly_change', 'yearly_change']
+      - name: value
+        tests:
+          - not_null
+
+  - name: ssb_14706_adjusted_cpi_by_group
+    columns:
+      - name: period_id
+        tests:
+          - not_null
+      - name: consumption_group
+        tests:
+          - not_null
+      - name: measure_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['index', 'monthly_change', 'yearly_change']
+      - name: value
+        tests:
+          - not_null
+
+  - name: taylor_rule_data
+    columns:
+      - name: year_month
+        tests:
+          - not_null
+      - name: inflation_rate
+        tests:
+          - not_null
+      - name: output_gap
+        tests:
+          - not_null
+      - name: policy_rate
+        tests:
+          - not_null
+      - name: taylor_rule_rate
+        tests:
+          - not_null
+      - name: policy_deviation
+        tests:
+          - not_null
