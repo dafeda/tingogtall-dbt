@@ -66,7 +66,7 @@ sources:
     schema: public
     tables:
       - name: nb_mpr_indicators
-        description: 'Norges Bank MPR indicators including policy rate'
+        description: 'Key indicators from the Norges Bank Monetary Policy Report (MPR), including the policy rate, extracted from Excel source files.'
         columns:
           - name: id
             description: 'Primary key'
