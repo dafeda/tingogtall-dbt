@@ -6,7 +6,10 @@ models:
       - name: year_month
         tests:
           - not_null
-      - name: currency
+      - name: base_currency
+        tests:
+          - not_null
+      - name: quote_currency
         tests:
           - not_null
       - name: measure_type
