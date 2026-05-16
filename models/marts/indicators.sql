@@ -213,3 +213,17 @@ FROM {{ ref('ssb_13760_labour_force_survey') }} AS lfs
 INNER JOIN
     {{ source('raw_ssb', 'time_periods') }} AS tp
     ON lfs.period_id = tp.period_id
+UNION ALL
+SELECT
+    tp.period_type,
+    tp.period_code,
+    'I-44' AS indicator,
+    'Import-weighted krone exchange rate index (1995=100). Rising = depreciating krone.' AS description,
+    'index' AS measure_type,
+    i44.value,
+    tp.start_date,
+    tp.end_date
+FROM {{ source('stage', 'currencies') }} AS i44
+INNER JOIN {{ source('public', 'time_periods') }} AS tp
+    ON i44.year_month = tp.period_code
+WHERE i44.currency = 'I-44'
