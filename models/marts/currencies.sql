@@ -6,6 +6,8 @@ WITH deduped AS (
     SELECT DISTINCT year_month, currency, value
     FROM {{ source('stage', 'currencies') }}
     WHERE value IS NOT NULL AND value != 0
+      -- I-44 is not a currency; it is modeled separately as an indicator
+      AND currency != 'I-44'
 ),
 
 base_rates AS (
