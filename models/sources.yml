@@ -177,6 +177,23 @@ sources:
             tests: [not_null]
           - name: value
           - name: created_at
+      - name: eurostat_series_observations
+        description: 'HICP data fetched from the Eurostat Statistics API.'
+        columns:
+          - name: date
+            description: 'First day of the observation month'
+          - name: geo
+            description: 'Eurostat geographical code (e.g. EA20, NO, UK, DE)'
+          - name: indicator
+            description: 'Indicator code (e.g. HICP_All-items)'
+          - name: description
+            description: 'Human-readable indicator description'
+          - name: unit
+            description: 'Unit of measurement (e.g. Index, 2015=100)'
+          - name: value
+            description: 'Observation value'
+          - name: created_at
+            description: 'Timestamp when the record was created'
       - name: ssb_14706_adjusted_cpi_by_group
         description: 'Raw adjusted CPI data from SSB table 14706'
         columns:
