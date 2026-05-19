@@ -72,7 +72,7 @@ WITH base AS (
         tp.period_type,
         tp.period_code,
         'US' AS country,
-        'CPI' AS indicator,
+        'CPIAUCSL' AS indicator,
         'Consumer Price Index for All Urban Consumers: All Items' AS description,
         AVG(f.value) AS value,
         tp.start_date,
