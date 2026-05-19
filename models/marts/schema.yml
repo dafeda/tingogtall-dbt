@@ -1,6 +1,32 @@
 version: 2
 
 models:
+  - name: cpi
+    description: 'Unified consumer price index data from Eurostat HICP, Norway CPI (SSB), and US CPI (FRED).'
+    columns:
+      - name: country
+        tests:
+          - not_null
+      - name: indicator
+        tests:
+          - not_null
+      - name: period_code
+        tests:
+          - not_null
+      - name: measure_type
+        tests:
+          - not_null
+          - accepted_values:
+              arguments:
+                values: ['index', 'yearly_change', 'monthly_change']
+      - name: value
+      - name: start_date
+        tests:
+          - not_null
+      - name: end_date
+        tests:
+          - not_null
+
   - name: currencies
     columns:
       - name: year_month
